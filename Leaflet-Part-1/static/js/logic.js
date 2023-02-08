@@ -1,11 +1,5 @@
 // Store our API endpoint as queryUrl.
-// var queryUrl = 'https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/2.5_week.geojson?format=geojson&maxlongitude=-65&minlongitude=-125&maxlatitude=50&minlatitude=25'
-// // Perform a GET request to the query URL/
-// d3.json(queryUrl).then(function (data) {
-//   // Once we get a response, send the data.features object to the createFeatures function.
-//   createFeatures(data.features);
-//   console.log(data);
-// });
+
 var queryUrl = 'https://earthquake.usgs.gov/fdsnws/event/1/query?format=geojson&starttime=2023-01-23&endtime=2023-02-06&maxlongitude=-65&minlongitude=-125&maxlatitude=50&minlatitude=25'
 // console.log(data);
 
@@ -15,31 +9,12 @@ var queryUrl = 'https://earthquake.usgs.gov/fdsnws/event/1/query?format=geojson&
 // Perform a GET request to the query URL/
 d3.json(queryUrl).then(function (data) {
   // Once we get a response, send the data.features object to the createFeatures function.
-  console.log(data.features);//.features[0].geometry.coordinates);
-  makeMarkers(data.features);
+  console.log(data);//.features[0].geometry.coordinates);
+  makeMarkers(data);
   // var quakes = data.features;
 });
 
 
-
-// Create the tile layer that will be the background of our map.
-// var streetmap = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-//     attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-// });
-
-// Creating our initial map object:
-// We set the longitude, latitude, and starting zoom level.
-// This gets inserted into the div with an id of "map".
-// var myMap = L.map("map", {
-//     center: [40.76031, -111.88822],
-//     zoom: 5.49
-//   });
-  
-//   // Adding a tile layer (the background map image) to our map:
-//   // We use the addTo() method to add objects to our map.
-// baseMap = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-//     attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-// }).addTo(myMap);
 
 // Define a markerSize() function that will give each earthquake a different radius based on its magnitude.
 function markerSize(magnitude) {
@@ -60,12 +35,11 @@ function markerColor(depth) {
     color = 'orange'
   } else color = 'red'
 };
-
+var quakeMarkers = [];
 function makeMarkers(data) {
 let quakes = data.features;
-var quakeMarkers = [];
 // Loop through the earthquake array, and create one marker for each earthquake object.
-for (var i = 0; i < quakes.length; i++) {
+for (var i = 0; i < quakes; i++) {
   var depth = quakes[i].geometry.coordinates[2]
   quakeMarkers.push(
   L.circle([quakes[i].geometry.coordinates[0], quakes[i].geometry.coordinates[1]], {
@@ -112,9 +86,9 @@ var myMap = L.map("map", {
 
 // Pass our map layers to our layer control.
 // Add the layer control to the map.
-L.control.layers(baseMaps, overlayMaps, {
-  collapsed: false
-}).addTo(myMap);
+// L.control.layers(baseMaps, overlayMaps, {
+//   collapsed: false
+// }).addTo(myMap);
 
 
 
@@ -192,3 +166,32 @@ L.control.layers(baseMaps, overlayMaps, {
 //     d3.json(url).then(function(data) {
 //     console.log(data);
 // })};  
+
+
+
+// Create the tile layer that will be the background of our map.
+// var streetmap = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+//     attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+// });
+
+// Creating our initial map object:
+// We set the longitude, latitude, and starting zoom level.
+// This gets inserted into the div with an id of "map".
+// var myMap = L.map("map", {
+//     center: [40.76031, -111.88822],
+//     zoom: 5.49
+//   });
+  
+//   // Adding a tile layer (the background map image) to our map:
+//   // We use the addTo() method to add objects to our map.
+// baseMap = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+//     attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+// }).addTo(myMap);
+
+// var queryUrl = 'https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/2.5_week.geojson?format=geojson&maxlongitude=-65&minlongitude=-125&maxlatitude=50&minlatitude=25'
+// // Perform a GET request to the query URL/
+// d3.json(queryUrl).then(function (data) {
+//   // Once we get a response, send the data.features object to the createFeatures function.
+//   createFeatures(data.features);
+//   console.log(data);
+// });
