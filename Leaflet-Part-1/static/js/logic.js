@@ -1,15 +1,14 @@
 // Store our API endpoint as queryUrl.
-
 var queryUrl = 'https://earthquake.usgs.gov/fdsnws/event/1/query?format=geojson&starttime=2023-01-23&endtime=2023-02-06&maxlongitude=-65&minlongitude=-125&maxlatitude=50&minlatitude=25'
-// console.log(data);
-
-// Store our API endpoint as queryUrl.
-// var queryUrl = "https://earthquake.usgs.gov/fdsnws/event/1/query?format=geojson&starttime=2021-01-01&endtime=2021-01-02&maxlongitude=-69.52148437&minlongitude=-123.83789062&maxlatitude=48.74894534&minlatitude=25.16517337";
-
+var quakeMarkers = [];
 // Perform a GET request to the query URL/
 d3.json(queryUrl).then(function (data) {
   // Once we get a response, send the data.features object to the createFeatures function.
   console.log(data);//.features[0].geometry.coordinates);
+  // var quakeMarkers = [];
+
+
+
   makeMarkers(data);
   // var quakes = data.features;
 });
@@ -21,6 +20,7 @@ function markerSize(magnitude) {
   return magnitude * 50;
 };
 
+// Define a markerColor function that will give each marker a different color based on it's depth.
 function markerColor(depth) {
   let color = [];
   if (depth < 10) {
@@ -35,24 +35,29 @@ function markerColor(depth) {
     color = 'orange'
   } else color = 'red'
 };
-var quakeMarkers = [];
+
+// var quakeMarkers = [];
+//function to make Markers for earthquakes within the past two weeks in the continental US.
 function makeMarkers(data) {
-let quakes = data.features;
+  let quakes = data.features;
+  // console.log(quakes.length);
 // Loop through the earthquake array, and create one marker for each earthquake object.
-for (var i = 0; i < quakes; i++) {
-  var depth = quakes[i].geometry.coordinates[2]
-  quakeMarkers.push(
-  L.circle([quakes[i].geometry.coordinates[0], quakes[i].geometry.coordinates[1]], {
-    fillOpacity: 0.5,
-    color: markerColor,
-    fillColor: markerColor,
-    // Setting our circle's radius to equal the output of our markerSize() function:
-    // This will make our marker's size proportionate to its magnitude.
-    radius: markerSize(quakes[i].properties.mag)
-  }).bindPopup(`<h1>${quakes[i].properties}</h1> <hr> <h3>Population: ${quakes[i].geometry.toLocaleString()}</h3>`).addTo(myMap)
-  );
+    for (var i = 0; i < quakes.length; i++) {
+      // create the markers for each earthquake in the array.
+      // console.log(quakes[i].properties.place)
+      quakeMarkers.push(
+        L.circle([quakes[i].geometry.coordinates[0], quakes[i].geometry.coordinates[1]], {
+        fillOpacity: 0.5,
+        color: 'red',
+        fillColor: 'red',
+        // Setting our circle's radius to equal the output of our markerSize() function:
+        // This will make our marker's size proportionate to its magnitude.
+        radius: markerSize(quakes[i].properties.mag)
+        }).bindPopup(`<h1>Location: ${quakes[i].properties.place}</h1> <hr> <h3>Location: ${quakes[i].geometry.toLocaleString()}</h3>`).addTo(myMap)
+      );
 }};
 
+// console.log(quakeMarkers);
 // Create the base layers.
 var street = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
     attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
@@ -63,13 +68,13 @@ var topo = L.tileLayer('https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png', {
 });
 
 // Create two separate layer groups: one for the city markers and another for the state markers.
-// var states = L.layerGroup(stateMarkers);
+var quakeLocations = L.layerGroup(quakeMarkers);
 // var cities = L.layerGroup(cityMarkers);
 
 // Create a baseMaps object.
 var baseMaps = {
-  "Street Map": street,
-  "Topographic Map": topo
+  "Street Map": street
+  // "Topographic Map": topo
 };
 
 // Create an overlay object.
