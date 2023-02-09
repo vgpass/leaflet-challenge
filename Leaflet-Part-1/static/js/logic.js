@@ -1,6 +1,7 @@
 // Store our API endpoint as queryUrl.
 var queryUrl = 'https://earthquake.usgs.gov/fdsnws/event/1/query?format=geojson&starttime=2023-01-23&endtime=2023-02-06&maxlongitude=-65&minlongitude=-125&maxlatitude=50&minlatitude=25'
 var quakeMarkers = [];
+
 // Perform a GET request to the query URL/
 d3.json(queryUrl).then(function (data) {
   // Once we get a response, send the data.features object to the createFeatures function.
@@ -11,13 +12,60 @@ d3.json(queryUrl).then(function (data) {
 
   makeMarkers(data);
   // var quakes = data.features;
-});
+  // var myMap = L.map("map", {
+  //   center: [40.76031, -111.88822],
+  //   zoom: 5.49,
+  //   layers: [street, quakeLocations]
+  // });
+// // Create the base layers.
+//   var street = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+//       attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+//   });
 
+//   var topo = L.tileLayer('https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png', {
+//     attribution: 'Map data: &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, <a href="http://viewfinderpanoramas.org">SRTM</a> | Map style: &copy; <a href="https://opentopomap.org">OpenTopoMap</a> (<a href="https://creativecommons.org/licenses/by-sa/3.0/">CC-BY-SA</a>)'
+//   });
+
+//   // Create two separate layer groups: one for the city markers and another for the state markers.
+//   var quakeLocations = L.layerGroup(quakeMarkers);
+//   // var cities = L.layerGroup(cityMarkers);
+
+//   // Create a baseMaps object.
+//   var baseMaps = {
+//     "Street Map": street
+//     // "Topographic Map": topo
+//   };
+
+//   // Create an overlay object.
+//   var overlayMaps = {
+//     "Earthquakes": quakeMarkers,
+//   };
+
+//   // Define a map object.
+//   var myMap = L.map("map", {
+//     center: [40.76031, -111.88822],
+//     zoom: 5.49,
+//     layers: [street, quakeLocations]
+//   });
+
+//   // Pass our map layers to our layer control.
+// // Add the layer control to the map.
+//   L.control.layers(baseMaps, overlayMaps).addTo(myMap);
+console.log(baseMaps);
+console.log(overlayMaps);
+console.log(myMap);
+L.control.layers(baseMaps, overlayMaps).addTo(myMap);
+});
+// var myMap = L.map("map", {
+//   center: [40.76031, -111.88822],
+//   zoom: 5.49,
+//   layers: [street, quakeLocations]
+// });
 
 
 // Define a markerSize() function that will give each earthquake a different radius based on its magnitude.
 function markerSize(magnitude) {
-  return magnitude * 50;
+  return magnitude * 500000;
 };
 
 // Define a markerColor function that will give each marker a different color based on it's depth.
@@ -53,18 +101,34 @@ function makeMarkers(data) {
         // Setting our circle's radius to equal the output of our markerSize() function:
         // This will make our marker's size proportionate to its magnitude.
         radius: markerSize(quakes[i].properties.mag)
-        }).bindPopup(`<h1>Location: ${quakes[i].properties.place}</h1> <hr> <h3>Location: ${quakes[i].geometry.toLocaleString()}</h3>`).addTo(myMap)
+        }).bindPopup(`<h1>Location: ${quakes[i].properties.place}</h1> <hr> <h3>Location: ${quakes[i].geometry.toLocaleString()}</h3>`)//.addTo(myMap)
       );
+  
+  // var quakeLocations = L.layerGroup(quakeMarkers);
+  // console.log(quakeLocations);      
+  // var overlayMaps = {
+  //   "Earthquakes": quakeMarkers,
+  // };
+  // var myMap = L.map("map", {
+  //   center: [40.76031, -111.88822],
+  //   zoom: 5.49,
+  //   layers: [street, quakeLocations]
+  // });
+  // Pass our map layers to our layer control.
+// Add the layer control to the map.
+  // L.control.layers(baseMaps, overlayMaps, {
+  //   collapsed: false
+  // }).addTo(myMap);
+
 }};
 
-// console.log(quakeMarkers);
 // Create the base layers.
 var street = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+  attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
 });
 
 var topo = L.tileLayer('https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png', {
-	attribution: 'Map data: &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, <a href="http://viewfinderpanoramas.org">SRTM</a> | Map style: &copy; <a href="https://opentopomap.org">OpenTopoMap</a> (<a href="https://creativecommons.org/licenses/by-sa/3.0/">CC-BY-SA</a>)'
+attribution: 'Map data: &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, <a href="http://viewfinderpanoramas.org">SRTM</a> | Map style: &copy; <a href="https://opentopomap.org">OpenTopoMap</a> (<a href="https://creativecommons.org/licenses/by-sa/3.0/">CC-BY-SA</a>)'
 });
 
 // Create two separate layer groups: one for the city markers and another for the state markers.
@@ -73,21 +137,56 @@ var quakeLocations = L.layerGroup(quakeMarkers);
 
 // Create a baseMaps object.
 var baseMaps = {
-  "Street Map": street
-  // "Topographic Map": topo
+"Street Map": street
+// "Topographic Map": topo
 };
 
 // Create an overlay object.
 var overlayMaps = {
-  "Earthquakes": quakeMarkers,
+"Earthquakes": quakeMarkers,
 };
 
 // Define a map object.
 var myMap = L.map("map", {
-  center: [40.76031, -111.88822],
-  zoom: 5.49,
-  layers: [street]
+center: [40.76031, -111.88822],
+zoom: 5.49,
+layers: [street, quakeLocations]
 });
+
+// Pass our map layers to our layer control.
+// Add the layer control to the map.
+// L.control.layers(baseMaps, overlayMaps).addTo(myMap);
+// // console.log(quakeMarkers);
+// // Create the base layers.
+// var street = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+//     attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+// });
+
+// var topo = L.tileLayer('https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png', {
+// 	attribution: 'Map data: &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, <a href="http://viewfinderpanoramas.org">SRTM</a> | Map style: &copy; <a href="https://opentopomap.org">OpenTopoMap</a> (<a href="https://creativecommons.org/licenses/by-sa/3.0/">CC-BY-SA</a>)'
+// });
+
+// // Create two separate layer groups: one for the city markers and another for the state markers.
+// // var quakeLocations = L.layerGroup(quakeMarkers);
+// // var cities = L.layerGroup(cityMarkers);
+
+// // Create a baseMaps object.
+// var baseMaps = {
+//   "Street Map": street
+//   // "Topographic Map": topo
+// };
+
+// // Create an overlay object.
+// var overlayMaps = {
+//   "Earthquakes": quakeMarkers,
+// };
+
+// // Define a map object.
+// var myMap = L.map("map", {
+//   center: [40.76031, -111.88822],
+//   zoom: 5.49,
+//   layers: [street, quakeLocations]
+// });
 
 // Pass our map layers to our layer control.
 // Add the layer control to the map.
