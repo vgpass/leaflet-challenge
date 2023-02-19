@@ -37,7 +37,7 @@ d3.json(queryUrl).then(function (data) {
 
     var div = L.DomUtil.create('div', 'legend');
     div.innerHTML += "<h3>Event Depth (km)</h3>";
-    var grades = [0, 10, 30, 50, 70, 90];
+    var grades = [-10, 10, 30, 50, 70, 90];
     var labels = [];
 
     // loop through our density intervals and generate a label with a colored square for each interval
