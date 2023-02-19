@@ -36,7 +36,7 @@ Variables are created for today's date and the date two weeks prior. A query url
 
 Using Leaflet, created a map that plots all the earthquakes from the dataset based on their longitude and latitude.
 
-![map](Leaflet-Part-1/images/map.png)
+![map](Leaflet-Part-1/images/map.png)map.png)
 
 Data markers reflect the magnitude of the earthquake by their size and the depth of the earthquake by color. Earthquakes with higher magnitudes appear larger, and earthquakes with greater depth appear darker in color.
 
@@ -48,7 +48,7 @@ Popups are included that provide additional information about the earthquake whe
 
 A legend provides context for the map data by illustrating the color scale by depth.
 
-![Alt text](Leaflet-Part-1/images/legend.png)
+![legend](Leaflet-Part-1/images/legend.png)
 
 
 # **Comments and Thoughts**
