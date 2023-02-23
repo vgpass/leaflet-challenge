@@ -20,8 +20,11 @@ In the repository are the completed challenge files.
     * *index.html* is the html file for the challenge.
     * *static* folder contains the js folder and the css folder
 
+* *Leaflet-part-2* is the folder that holds part 2 of the challenge assignment with the bonus exercise
+    * *index.html* is the html file for the bonus.
+    * *static* folder contains the js folder and the css folder
 
-* *js* Folder - This folder contains the *logic.js* file which is the JavaScript code that updates the html file.
+* *js* Folder - This folder contains the *logic.js* file and the data for the techtonic plates.
 
 * *css* Folder - This folder contains *style.css* file for the *index.html* file
 
@@ -50,12 +53,28 @@ A legend provides context for the map data by illustrating the color scale by de
 
 ![legend](Leaflet-Part-1/images/legend.png)
 
+**BONUS ASSIGNMENT**
+
+I was able to complete the bonus assignment. The new map in the *Leaflet-Part-2* folder shows four different maps: satellite, grayscale, outdoor, and world ocean base. Markers are created as before, but the markers have been added to a control layer that can be turned on and off. In addition, techtonic plates have been added to a layer control which can also be turned on and off. It takes some time for the markers and plates to load. I'm not certain how to speed up my code.
+
+Here are the controls:
+
+![controls](Leaflet-Part-2/images/controls.png)
+
+This is the satellite map with all the markers:
+
+![satellite](Leaflet-Part-2/images/satellite.png)
+
+And finally, the grayscale with just the techtonic plates and earthquake markers deselected:
+
+![grayscale](Leaflet-Part-2/images/grayscale.png)
+
 
 # **Comments and Thoughts**
 
 This challenge was probably one of the most difficult for me, along with the last one. JavaScript continues to elude me. I am still having difficulty understanding how best to structure the code. However, I learned a great deal from working with my team on group project 3. Understanding the role that the *style.css* file plays and how it works with the html file helped me to get my legend to show up on the map. Also, I was able to figure out on my own a way to get the dates right for my API call. I had a couple good tutor sessions that helped a lot, and Grace and Mark also helped me restructure my code to get my markers right.
 
-I am turning in the assignment now with only part one completed since the bonus isn't required to get full credit for the assignment, but I plan to continue working on the assignment, complete the bonus for practice and resubmit at a later date.
+I was able to complete the bonus section, and I almost got through it on my own. Spent a lot of time reading documentation and experimenting with structuring my code in different ways. My TA, Grace, helped me with my final issue. I got all my markers to show up, and the control appeared, but the markers did not disappear when deselected. It turns out the variable for the marker layer had to be outside the 'for' loop. We couldn't figure out why. The markers still take some time to load, and I'm not sure how to speed up the process. I learned a lot from this homework.
 
 
 

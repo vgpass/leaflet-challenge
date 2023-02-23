@@ -1,4 +1,4 @@
-// logic.js file for Vincent Passanisi, Module 15 Challenge
+// logic.js file for Vincent Passanisi, Module 15 Challenge BONUS ASSIGNMENT
 
 // Get current date and the date two weeks prior and store to variables
 const date = new Date();
@@ -22,12 +22,13 @@ d3.json(queryUrl).then(function (data) {
   
     // variable to hold the earthquake features data
     let quakes = data.features;
+    // create a layer group for the circle markers
+    var circles = L.layerGroup();
+    // add the layer group to the map
+    myMap.addLayer(circles);
     // loop to create the circle markers for the map
     for (var i = 0; i < quakes.length; i++) {
-      // create a layer group for the circle markers
-      var circles = L.layerGroup();
-      // add the layer group to the map
-      myMap.addLayer(circles);
+
       // create the markers for each earthquake in the array.
       L.circle([quakes[i].geometry.coordinates[1], quakes[i].geometry.coordinates[0]], {
         fillOpacity: .50,
@@ -40,30 +41,29 @@ d3.json(queryUrl).then(function (data) {
         radius: markerSize(quakes[i].properties.mag)
       }).bindPopup(`<h1>Location: ${quakes[i].properties.place}</h1> <hr> <h2>Magnitude: ${quakes[i].properties.mag}</h2> 
                     <hr> <h2>Depth: ${quakes[i].geometry.coordinates[2]} km</h2>`).addTo(circles)
-      // overlayMaps.push("Earthquakes", circles)
-  }
-  // retrieve data on techtonic plates
-  d3.json('static/js/data.json').then(function (geoData) {
-    // create layer group for techtonic plates
-    var plates = L.layerGroup();
-    // add the layer group to the map
-    myMap.addLayer(plates);
-    // create the techtonic markers
-    L.geoJson(geoData, {
-      style: myStyle
-    }).addTo(plates);
-    // wait for the data to fully load before assigning the variable
-    if (typeof plates !== 'undefined' | typeof circles !== 'undefined') {
-      var overlayMaps = {
-        "Techtonic Plates": plates,
-        "Earthquakes": circles
+    };
+
+    d3.json('static/js/data.json').then(function (geoData) {
+      // create layer group for techtonic plates
+      var plates = L.layerGroup();
+      // add the layer group to the map
+      myMap.addLayer(plates);
+      // create the techtonic markers
+      L.geoJson(geoData, {
+        style: myStyle
+      }).addTo(plates);
+      // wait for the data to fully load before assigning the variable
+      if (typeof plates !== 'undefined' | typeof circles !== 'undefined') {
+        var overlayMaps = {
+          "Techtonic Plates": plates,
+          "Earthquakes": circles
+          };
+          // L.control.layers(baseMaps, overlayMaps).addTo(myMap); 
         };
-        // L.control.layers(baseMaps, overlayMaps).addTo(myMap); 
-      };
-
-    L.control.layers(baseMaps, overlayMaps).addTo(myMap); 
-  });
-
+  
+      L.control.layers(baseMaps, overlayMaps).addTo(myMap); 
+      });  // overlayMaps.push("Earthquakes", circles)
+  
   // Create the legend using the same colors as the markers
   var legend = L.control({position: "bottomright"});
 
@@ -108,16 +108,8 @@ function markerColor(depth) {
   } else return 'red'
 };
 
-
-// Create the base layers.
-// var street = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-//   attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-// });
-// var topo = L.tileLayer('https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png', {
-// attribution: 'Map data: &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, <a href="http://viewfinderpanoramas.org">SRTM</a> | Map style: &copy; <a href="https://opentopomap.org">OpenTopoMap</a> (<a href="https://creativecommons.org/licenses/by-sa/3.0/">CC-BY-SA</a>)'
-// });
 var ocean = L.tileLayer('http://services.arcgisonline.com/arcgis/rest/services/Ocean/World_Ocean_Base/MapServer/tile/{z}/{y}/{x}', {
-  attribution: 'http://alexurquhart.github.io/free-tiles/#'
+  attribution: '&copy;' + 'http://alexurquhart.github.io/free-tiles/#'
 });
 var outdoor = L.tileLayer('https://tiles.stadiamaps.com/tiles/outdoors/{z}/{x}/{y}.png', {
   attribution: '© <a href="https://openmaptiles.org/">OpenMapTiles</a> ' +
@@ -130,7 +122,7 @@ var satellite = L.tileLayer('http://server.arcgisonline.com/ArcGIS/rest/services
   attribution: '&copy; '+mapLink+', '+wholink,
 });
 var gray = L.tileLayer('https://tiles.stadiamaps.com/tiles/alidade_smooth/{z}/{x}/{y}.png', {
-  attributions: '© <a href="https://openmaptiles.org/">OpenMapTiles</a> ' +
+  attribution: '© <a href="https://openmaptiles.org/">OpenMapTiles</a> ' +
       '© <a href="http://www.openstreetmap.org/copyright">' +
       'OpenStreetMap contributors</a>'
 });
@@ -138,18 +130,11 @@ var gray = L.tileLayer('https://tiles.stadiamaps.com/tiles/alidade_smooth/{z}/{x
 
 // Create a baseMaps object.
 var baseMaps = {
-// "Street Map": street,
-// "Topographic Map": topo,
 "Satellite": satellite,
 "Grayscale": gray,
 "Outdoor": outdoor,
 "World Ocean Base": ocean
 };
-
-// var overlayMaps = {
-//   // "Techtonic Plates":  
-//   "Earthquakes": circles
-// };
 
 // Define a map object.
 var myMap = L.map("map", {
